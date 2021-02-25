@@ -3,23 +3,15 @@ defmodule RocketpayWeb.UsersController do
 
   alias Rocketpay.User
 
-  def create(conn, params) do
-    params
-      |> Rocketpay.create_user()
-      |> handle_response(conn)
-  end
+  action_fallback RocketpayWeb.FallbackController
 
-  defp handle_response({:ok, %User{} = user}, conn) do
-    conn
+  def create(conn, params) do
+    # Agora utilizando o with, ele vai verificar com pattern matching se o create_user deu certo. Se deu certo, roda o corpo da função.
+    # Se não, vai direto pro FallbackController
+    with {:ok, %User{} = user} <- Rocketpay.create_user(params) do
+      conn
       |> put_status(:created)
       |> render("create.json", user: user)
+    end
   end
-
-  defp handle_response({:error, result}, conn) do
-    conn
-      |> put_status(:bad_request)
-      |> put_view(RocketpayWeb.ErrorView)
-      |> render("400.json", result: result)
-  end
-
 end
