@@ -44,7 +44,9 @@ defmodule Rocketpay.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:bcrypt_elixir, "~> 2.0"}
+      {:bcrypt_elixir, "~> 2.0"},
+      # Apesar de o Ecto utilizar a lib Decimal, é uma boa prática deixar o decimal explícito aqui, vai que removo a lib Ecto algum dia.
+      {:decimal, "~> 2.0"}
     ]
   end
 
